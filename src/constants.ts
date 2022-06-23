@@ -17,7 +17,10 @@ export type Piece = {
 	color: Color,
 }
 
-export type Empty = {}
+export type Empty = {
+	type?: undefined,
+	color?: undefined,
+}
 
 export type ChessBoard = (Piece | Empty)[][]
 
@@ -28,7 +31,25 @@ export type PlayerAction = {
 
 export interface Player {
 	name: string,
+	isManual?: boolean,
 	move: (currentState: ChessBoard, colorToMove: Color) => PlayerAction,
+}
+
+export interface Bot extends Player {
+	isManual?: undefined,
+}
+
+export const HumanPlayer: Player = {
+	name: 'Human Player',
+	isManual: true,
+	move: (currentState: ChessBoard, colorToMove: Color): PlayerAction => {
+		throw new Error('HumanPlayer does not actually have a move action.')
+	},
+}
+
+export type Players = {
+	[Color.WHITE]: Player,
+	[Color.BLACK]: Player,
 }
 
 export const StartingBoard: ChessBoard = [

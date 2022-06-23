@@ -1,17 +1,26 @@
 <template>
-	<board :board="board" :manual-turn="currentColor" :manaul-move="performAction"/>
-
-	<button onclick="document.body.classList.toggle('flip')">FLIP</button>
+	<board
+		:board="board"
+		:manual-turn="isManual ? currentColor : false"
+		:manual-move="makeManualMove"
+	/>
 </template>
 
 <script setup lang="ts">
 	import { ref } from 'vue';
 	import Board from './components/Board.vue'
-	import { StartingBoard, Color, type PlayerAction, Type } from '@/constants'
+	import { StartingBoard, Color, type PlayerAction, type Players, HumanPlayer } from '@/constants'
 	import * as GameController from '@/game-controller'
+	import * as bots from './bots'
 	
 	const board = ref(StartingBoard)
 	const currentColor = ref<Color | false>(Color.WHITE)
+	const isManual = ref<boolean>(true)
+	const players = ref<Players>({
+		[Color.WHITE]: HumanPlayer,
+		[Color.BLACK]: bots.Monkey,
+	})
+
 	const applyChanges = (next: GameController.GameState) => {
 		board.value = next.board
 		currentColor.value = next.currentColor
