@@ -15,6 +15,7 @@
 			<custom-button text="Rotate" onclick="document.body.classList.toggle('flip')"/>
 		</div>
 	</footer>
+	<animator :controller="animationController"/>
 </template>
 
 <script setup lang="ts">
@@ -22,9 +23,13 @@
 	import { StartingBoard, Color, type PlayerAction, type Players, HumanPlayer } from '@/constants'
 	import * as GameController from '@/game-controller'
 	import Board from '@/components/Board.vue'
+	import Animator, { type AnimationController } from '@/components/Animator.vue'
 	import PlayerSelector from '@/components/PlayerSelector.vue'
 	import CustomButton from '@/components/CustomButton.vue'
 
+
+	// instantiate with a placeholder animate function
+	const animationController = ref<AnimationController>({ animate: () => {} })
 
 	const board = ref(StartingBoard)
 	const currentColor = ref<Color | false>(Color.WHITE)
@@ -49,19 +54,7 @@
 		}
 
 		const result = GameController.submitAction(board.value, currentColor.value, move)
-		
-		const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
-		await delay(100)
-
-		// draw animations
-
-		if (result.lastMove.attack) {
-			document.body.classList.add('shake')
-			setTimeout(() => {
-				document.body.classList.remove('shake')
-			}, 300)
-		}
-
+		await animationController.value.animate(result.lastMove)
 		applyChanges(result)
 
 		if (result.winner !== false) {
