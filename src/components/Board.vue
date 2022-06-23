@@ -15,7 +15,7 @@
 				:disabled="manualTurn !== square.color && !isOption(rowNumber, columnNumber, board)"
 				:onclick="() => select(rowNumber, columnNumber, board, manualMove)"
 			>
-				<chess-piece v-if="isChessPiece(square)" :type="square.type" :color="square.color"/>
+				<chess-piece v-if="square.type != undefined" :type="square.type" :color="square.color"/>
 			</button>
 		</template>
 	</section>

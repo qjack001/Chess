@@ -10,8 +10,8 @@
 			<player-selector :players="players" :onChange="onPlayerChange"/>
 		</div>
 		<div class="buttons">
-			<custom-button tooltip="About" to="https://github.com/qjack001/Chess"/>
-			<custom-button tooltip="Rotate" onclick="document.body.classList.toggle('flip')"/>
+			<custom-button text="About" to="https://github.com/qjack001/Chess"/>
+			<custom-button text="Rotate" onclick="document.body.classList.toggle('flip')"/>
 		</div>
 	</section>
 </template>

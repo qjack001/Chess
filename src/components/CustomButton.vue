@@ -1,15 +1,15 @@
 <template>
 	<button v-if="onclick" :onclick="onclick">
-		{{ tooltip }}
+		{{ text }}
 	</button>
 	<a  v-else-if="to" :href="to" target="_blank">
-		{{ tooltip }}
+		{{ text }}
 	</a>
 </template>
 
 <script setup lang="ts">
 	defineProps<{
-		tooltip: string,
+		text: string,
 		to?: string,
 		onclick?: string,
 	}>()

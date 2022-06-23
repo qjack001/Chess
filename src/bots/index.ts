@@ -1,2 +1,2 @@
 
-export { Monkey } from './monkey';
+export { Monkey } from './monkey'

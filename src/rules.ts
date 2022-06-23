@@ -2,7 +2,7 @@ import { type PlayerAction, type ChessBoard, Type, Color } from '@/constants'
 
 
 /**
- * Determins if the provided move is allowed (given the current game state).
+ * Determines if the provided move is allowed (given the current game state).
  * Note: this does not account for whether you are in check or putting yourself
  * into check. Use `isInCheck()` or `willBeInCheck()` for that.
  */
@@ -121,7 +121,7 @@ export function piecesInbetween(start: [number, number], end: [number, number], 
 
 /**
  * Checks if player (based on who is moving) will be in check after the move is
- * complete. Note: expects a vaild PlayerAction (use `isLegalMove()` for that).
+ * complete. Note: expects a valid PlayerAction (use `isLegalMove()` for that).
  */
 export function willBeInCheck(currentState: ChessBoard, move: PlayerAction): boolean {
 	const movingPiece = {
@@ -144,7 +144,7 @@ export function willBeInCheck(currentState: ChessBoard, move: PlayerAction): boo
 }
 
 /**
- * Simply utility to determin if the given player is in check.
+ * Simply utility to determine if the given player is in check.
  * 
  * @param currentColor which player to check
  * @param currentState the game board
@@ -185,8 +185,8 @@ export function isInCheck(currentColor: Color, currentState: ChessBoard): boolea
 }
 
 /**
- * Determin if the given move is allowed for a pawn. Does not test the legality
- * of the action, whether it's within the board boundries, or anything like that.
+ * Determine if the given move is allowed for a pawn. Does not test the legality
+ * of the action, whether it's within the board boundaries, or anything like that.
  * Just whether the movement described matches the expected pattern for pawns.
  * 
  * Pawns can move forward (up the board for White, down the board for Black) by
@@ -212,8 +212,8 @@ export function isAllowedPawnMove(currentState: ChessBoard, move: PlayerAction):
 }
 
 /**
- * Determin if the given move is allowed for a rook. Does not test the legality
- * of the action, whether it's within the board boundries, or anything like that.
+ * Determine if the given move is allowed for a rook. Does not test the legality
+ * of the action, whether it's within the board boundaries, or anything like that.
  * Just whether the movement described matches the expected pattern for rooks.
  * 
  * Rooks can move vertically or horizontally in straight lines.
@@ -227,8 +227,8 @@ export function isAllowedRookMove(move: PlayerAction): boolean {
 }
 
 /**
- * Determin if the given move is allowed for a knight. Does not test the legality
- * of the action, whether it's within the board boundries, or anything like that.
+ * Determine if the given move is allowed for a knight. Does not test the legality
+ * of the action, whether it's within the board boundaries, or anything like that.
  * Just whether the movement described matches the expected pattern for knights.
  * 
  * Knights can move in an L-shaped pattern; two squares in one direction, one square
@@ -244,8 +244,8 @@ export function isAllowedKnightMove(move: PlayerAction): boolean {
 }
 
 /**
- * Determin if the given move is allowed for a bishop. Does not test the legality
- * of the action, whether it's within the board boundries, or anything like that.
+ * Determine if the given move is allowed for a bishop. Does not test the legality
+ * of the action, whether it's within the board boundaries, or anything like that.
  * Just whether the movement described matches the expected pattern for bishops.
  * 
  * Bishops can move in a diagonal path.
@@ -260,11 +260,11 @@ export function isAllowedBishopMove(move: PlayerAction): boolean {
 }
 
 /**
- * Determin if the given move is allowed for a queen. Does not test the legality
- * of the action, whether it's within the board boundries, or anything like that.
+ * Determine if the given move is allowed for a queen. Does not test the legality
+ * of the action, whether it's within the board boundaries, or anything like that.
  * Just whether the movement described matches the expected pattern for queens.
  * 
- * Queens can move in a diagonal path, a stright vertical path, or a straight
+ * Queens can move in a diagonal path, a straight vertical path, or a straight
  * horizontal path.
  */
 export function isAllowedQueenMove(move: PlayerAction): boolean {
@@ -275,8 +275,8 @@ export function isAllowedQueenMove(move: PlayerAction): boolean {
 }
 
 /**
- * Determin if the given move is allowed for a king. Does not test the legality
- * of the action, whether it's within the board boundries, or anything like that.
+ * Determine if the given move is allowed for a king. Does not test the legality
+ * of the action, whether it's within the board boundaries, or anything like that.
  * Just whether the movement described matches the expected pattern for kings.
  * 
  * Kings can move in any direction, by one square.
@@ -303,13 +303,13 @@ export function otherColor(input: Color): Color {
 }
 
 /**
- * Utility function to genorate a list of numbers in order. For example:
+ * Utility function to generate a list of numbers in order. For example:
  * ```
  * range(12, 6) => [12, 11, 10, 9 , 8, 7, 6]
  * ```
  */
-function range(start: number, end: number) {
-	const allNumbersBetween = Array(Math.max(start, end) - Math.min(start, end) + 1).fill()
+function range(start: number, end: number): number[] {
+	const allNumbersBetween = Array(Math.max(start, end) - Math.min(start, end) + 1).fill(0)
 		.map((_, index) => Math.min(start, end) + index)
 
 	return (start > end)

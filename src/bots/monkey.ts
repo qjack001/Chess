@@ -1,5 +1,5 @@
-import type { ChessBoard, Color, Bot, PlayerAction } from "@/constants";
-import { isLegalMove } from "@/rules";
+import type { ChessBoard, Color, Bot, PlayerAction } from '@/constants'
+import { isLegalMove } from '@/rules'
 
 /**
  * Monkey takes inspiration from the Infinite Monkey Theorem, picking moves at

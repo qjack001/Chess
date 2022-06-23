@@ -30,7 +30,7 @@ export function submitAction(existingBoard: ChessBoard, currentColor: Color, mov
 		const justKilledKing = (existingBoard[move.from[0]][move.from[1]].color == currentColor &&
 			existingBoard[move.from[0]][move.from[1]].type == Type.KING)
 		
-		// player forfites turn. no action is preformed if invalid square was
+		// player forfeits turn. no action is preformed if invalid square was
 		// chosen. however, if an otherwise illegal move is taken, player looses
 		// the piece. if player illegally moved their king, game has been won by
 		// opponent.
