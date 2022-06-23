@@ -4,11 +4,23 @@
 		:manual-turn="isManual ? currentColor : false"
 		:manual-move="makeManualMove"
 	/>
+
+	<section class="controls">
+		<div class="player-select">
+			<player-selector :players="players" :onChange="onPlayerChange"/>
+		</div>
+		<div class="buttons">
+			<custom-button tooltip="About" to="https://github.com/qjack001/Chess"/>
+			<custom-button tooltip="Rotate" onclick="document.body.classList.toggle('flip')"/>
+		</div>
+	</section>
 </template>
 
 <script setup lang="ts">
 	import { ref } from 'vue';
 	import Board from './components/Board.vue'
+	import PlayerSelector from './components/PlayerSelector.vue'
+	import CustomButton from './components/CustomButton.vue'
 	import { StartingBoard, Color, type PlayerAction, type Players, HumanPlayer } from '@/constants'
 	import * as GameController from '@/game-controller'
 	import * as bots from './bots'
@@ -108,6 +120,7 @@
 
 	body
 	{
+		font-family: monospace;
 		background: var(--background-black);
 		margin: calc(var(--square-size) / 2);
 	}
@@ -115,6 +128,21 @@
 	body.shake
 	{
 		animation: shake 0.35s infinite;
+	}
+
+	section.controls
+	{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin: auto;
+		margin-top: calc(var(--square-size) / 2);
+		max-width: 600px;
+	}
+
+	.player-select, .buttons
+	{
+		display: inline;
 	}
 
 	@keyframes shake
