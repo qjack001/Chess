@@ -8,12 +8,7 @@ import { type PlayerAction, type ChessBoard, Type, Color } from '@/constants'
  */
 export function isLegalMove(currentState: ChessBoard, move: PlayerAction): boolean {
 
-	// check move is within board boundries
-	if (move.from[0] < 0 || move.from[0] >= currentState.length ||
-		move.from[1] < 0 || move.from[1] >= currentState.length ||
-		move.to[0] < 0 || move.to[0] >= currentState.length ||
-		move.to[1] < 0 || move.to[1] >= currentState.length) {
-		
+	if (isOutOfBounds(currentState, move)) {
 		return false
 	}
 
@@ -54,6 +49,16 @@ export function isLegalMove(currentState: ChessBoard, move: PlayerAction): boole
 	return true
 }
 
+export function isOutOfBounds(board: ChessBoard, move: PlayerAction) {
+	return (move == undefined || move.from == undefined || move.to == undefined ||
+		move.from[0] == undefined || move.from[1] == undefined || 
+		move.to[0] == undefined || move.to[1] == undefined ||
+		move.from[0] < 0 || move.from[0] >= board.length ||
+		move.from[1] < 0 || move.from[1] >= board.length ||
+		move.to[0] < 0 || move.to[0] >= board.length ||
+		move.to[1] < 0 || move.to[1] >= board.length)
+}
+
 /**
  * Simple utility to tell if there are pieces inbetween a start and a finish
  * coordinate. This excludes the starting and ending spot, just checking in-between
@@ -91,7 +96,7 @@ export function piecesInbetween(start: [number, number], end: [number, number], 
 
 		return inbetween.includes(true)
 	}
-	
+
 	// diagonal movement
 	if (Math.abs(start[0] - end[0]) == Math.abs(start[1] - end[1])) {
 		const verticalMovement = range(start[0], end[0])
@@ -145,9 +150,7 @@ export function willBeInCheck(currentState: ChessBoard, move: PlayerAction): boo
  * @param currentState the game board
  */
 export function isInCheck(currentColor: Color, currentState: ChessBoard): boolean {
-	const opposingColor = currentColor == Color.WHITE
-		? Color.BLACK
-		: Color.WHITE
+	const opposingColor = otherColor(currentColor)
 
 	let kingsRow = 0
 	let kingsColumn = 0
@@ -283,6 +286,20 @@ export function isAllowedKingMove(move: PlayerAction): boolean {
 	const horizontalMovement = Math.abs(move.to[1] - move.from[1])
 
 	return (verticalMovement <= 1 && horizontalMovement <= 1)
+}
+
+export function isAtEndOfBoard(destinationRow: number, currentColor: Color, boardLength: number) {
+	return ((currentColor == Color.WHITE && destinationRow == 0) ||
+		(currentColor == Color.BLACK && destinationRow == boardLength))
+}
+
+/**
+ * Simple utility function to get the other color than the one given.
+ */
+export function otherColor(input: Color): Color {
+	return (input == Color.WHITE)
+			? Color.BLACK
+			: Color.WHITE
 }
 
 /**

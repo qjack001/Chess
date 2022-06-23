@@ -8,44 +8,74 @@
 	import { ref } from 'vue';
 	import Board from './components/Board.vue'
 	import { StartingBoard, Color, type PlayerAction, Type } from '@/constants'
+	import * as GameController from '@/game-controller'
 	
 	const board = ref(StartingBoard)
 	const currentColor = ref<Color | false>(Color.WHITE)
+	const applyChanges = (next: GameController.GameState) => {
+		board.value = next.board
+		currentColor.value = next.currentColor
+		isManual.value = (next.currentColor === false)
+				? false
+				: players.value[next.currentColor].isManual ?? false
+	}
 
-	const performAction = (move: PlayerAction) => {
-		let movingPiece = board.value[move.from[0]][move.from[1]]
-		const destination = board.value[move.to[0]][move.to[1]]
+	const performAction = async (move: PlayerAction) => {
+		if (currentColor.value === false) {
+			return
+		}
+
+		const result = GameController.submitAction(board.value, currentColor.value, move)
 		
-		// draw animation
+		const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
+		await delay(100)
 
-		if (destination.color != undefined) { // screen shake on attacks
+		// draw animations
+
+		if (result.lastMove.attack) {
 			document.body.classList.add('shake')
+			setTimeout(() => {
+				document.body.classList.remove('shake')
+			}, 300)
 		}
 
+		applyChanges(result)
 
-		if (movingPiece.type == Type.PAWN &&
-			((movingPiece.color == Color.WHITE && move.to[0] == 0) ||
-			(movingPiece.color == Color.BLACK && move.to[0] == board.value.length)))
-		{
-			// pawns that reach the end are turned into queens
-			movingPiece = { type: Type.QUEEN, color: movingPiece.color }
+		if (result.winner !== false) {
+			alert(players.value[result.winner].name + ' wins!')
 		}
+	}
 
-		board.value[move.to[0]][move.to[1]] = movingPiece
-		board.value[move.from[0]][move.from[1]] = {}
+	const runBotMove = async (currentColor: Color) => {
+		// deep clone so malicious bot cannot change source of truth
+		const currentBoard = JSON.parse(JSON.stringify(board.value))
 
+		await performAction(players.value[currentColor]
+			.move(currentBoard, currentColor))
+	}
 
-		const nextColor = currentColor.value == Color.WHITE
-			? Color.BLACK
-			: Color.WHITE
+	const makeManualMove = (move: PlayerAction) => {
+		isManual.value = false // suspend further interaction while action is completed
+		performAction(move)
+			.then(() => {
+				// if the player is now a bot, run it's move
+				if(!isManual.value && currentColor.value !== false) {
+					runBotMove(currentColor.value)
+				}
+			}
+		)
+	}
 
-		currentColor.value = false
-
-
-		setTimeout(() => {
-			document.body.classList.remove('shake')
-			currentColor.value = nextColor
-		}, 350)
+	const onPlayerChange = async () => {
+		isManual.value = (currentColor.value === false)
+				? false
+				: players.value[currentColor.value].isManual ?? false
+		
+		// run game if both players are bots (or just do the first move if current
+		// player is and other is not).
+		while (currentColor.value !== false && !players.value[currentColor.value].isManual) {
+			await runBotMove(currentColor.value)
+		}
 	}
 </script>
 
