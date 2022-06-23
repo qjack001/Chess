@@ -83,7 +83,7 @@
 		color: var(--foreground);
 		background-color: var(--background);
 
-		box-shadow: inset 0 -4px 0 0 rgba(0, 0, 0, 0.3);
+		box-shadow: inset 0 -4px 0 0 rgba(0, 0, 0, 0.5);
 		border: 1px solid rgba(255, 255, 255, 0.1);
 		border-radius: 4px;
 		padding: 0.4rem 1ch calc(0.4rem + 3px);
@@ -98,7 +98,7 @@
 	select:focus-visible
 	{
 		box-shadow:
-			inset 0 -4px 0 0 rgba(0, 0, 0, 0.3),
+			inset 0 -4px 0 0 rgba(0, 0, 0, 0.5),
 			0 0 0 4px var(--background-black),
 			0 0 0 5px var(--white);
 	}

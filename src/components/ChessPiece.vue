@@ -2,7 +2,7 @@
 	Renders a chess piece
 -->
 <template>
-	<div :class="'piece ' + Color[color]">
+	<div :class="`flippable piece ${Color[color]}`">
 		{{ renderPiece(type) }}
 	</div>
 </template>
@@ -36,8 +36,6 @@
 		text-align: center;
 		user-select: none;
 		pointer-events: none;
-
-		transition: transform 1.5s ease;
 	}
 
 	.flip .piece

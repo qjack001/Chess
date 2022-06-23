@@ -2,16 +2,16 @@
 	Renders an interactive game board
 -->
 <template>
-	<section class="game-board">
+	<section class="flippable game-board">
 		<template v-for="(row, rowNumber) in board">
 			<button
 				v-for="(square, columnNumber) in row"
-				:class="[
-					'square',
-					getSquareColor(rowNumber, columnNumber),
-					isSelected(rowNumber, columnNumber) ? 'selected' : '',
-					isOption(rowNumber, columnNumber, board) ? 'option' : '',
-				]"
+				:class="{
+					'square': true,
+					[getSquareColor(rowNumber, columnNumber)]: true,
+					'selected': isSelected(rowNumber, columnNumber),
+					'option': isOption(rowNumber, columnNumber, board),
+				}"
 				:disabled="manualTurn !== square.color && !isOption(rowNumber, columnNumber, board)"
 				:onclick="() => select(rowNumber, columnNumber, board, manualMove)"
 			>
@@ -25,7 +25,7 @@
 	import { ref } from 'vue'
 	import { type ChessBoard, type Piece, type Empty, Color, type PlayerAction } from '@/constants'
 	import { isLegalMove, willBeInCheck } from '@/rules'
-	import ChessPiece from './ChessPiece.vue'
+	import ChessPiece from '@/components/ChessPiece.vue'
 
 	defineProps<{
 		board: ChessBoard,
@@ -94,13 +94,6 @@
 		grid-template-columns: repeat(6, 1fr);
 		width: calc(6 * var(--square-size));
 		margin: auto;
-
-		transition: transform 1.5s ease;
-	}
-
-	.flip section.game-board
-	{
-		transform: rotate(180deg);
 	}
 
 	button.square

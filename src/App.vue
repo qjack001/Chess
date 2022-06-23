@@ -1,11 +1,12 @@
 <template>
-	<board
-		:board="board"
-		:manual-turn="isManual ? currentColor : false"
-		:manual-move="makeManualMove"
-	/>
-
-	<section class="controls">
+	<main>
+		<board
+			:board="board"
+			:manual-turn="isManual ? currentColor : false"
+			:manual-move="makeManualMove"
+		/>
+	</main>
+	<footer class="controls">
 		<div class="player-select">
 			<player-selector :players="players" :onChange="onPlayerChange"/>
 		</div>
@@ -13,17 +14,18 @@
 			<custom-button text="About" to="https://github.com/qjack001/Chess"/>
 			<custom-button text="Rotate" onclick="document.body.classList.toggle('flip')"/>
 		</div>
-	</section>
+	</footer>
 </template>
 
 <script setup lang="ts">
 	import { ref } from 'vue';
-	import Board from './components/Board.vue'
-	import PlayerSelector from './components/PlayerSelector.vue'
-	import CustomButton from './components/CustomButton.vue'
 	import { StartingBoard, Color, type PlayerAction, type Players, HumanPlayer } from '@/constants'
 	import * as GameController from '@/game-controller'
-	
+	import Board from '@/components/Board.vue'
+	import PlayerSelector from '@/components/PlayerSelector.vue'
+	import CustomButton from '@/components/CustomButton.vue'
+
+
 	const board = ref(StartingBoard)
 	const currentColor = ref<Color | false>(Color.WHITE)
 	const isManual = ref<boolean>(true)
@@ -31,6 +33,7 @@
 		[Color.WHITE]: HumanPlayer,
 		[Color.BLACK]: HumanPlayer,
 	})
+
 
 	const applyChanges = (next: GameController.GameState) => {
 		board.value = next.board
@@ -122,6 +125,7 @@
 		font-family: Menlo, monospace;
 		background: var(--background-black);
 		margin: calc(var(--square-size) / 2);
+		position: relative;
 	}
 
 	body.shake
@@ -129,7 +133,7 @@
 		animation: shake 0.35s infinite;
 	}
 
-	section.controls
+	footer.controls
 	{
 		display: flex;
 		align-items: center;
@@ -143,6 +147,16 @@
 	{
 		display: inline;
 	}
+
+	.flippable
+	{
+		transition: transform 1.5s ease;
+	}
+
+	.flip .flippable
+	{
+		transform: rotate(180deg);
+	} 
 
 	@keyframes shake
 	{
