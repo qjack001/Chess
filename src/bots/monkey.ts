@@ -1,5 +1,5 @@
 import type { ChessBoard, Color, Bot, PlayerAction } from '@/constants'
-import { isLegalMove } from '@/rules'
+import * as rules from '@/rules'
 
 /**
  * Monkey takes inspiration from the Infinite Monkey Theorem, picking moves at
@@ -11,25 +11,11 @@ import { isLegalMove } from '@/rules'
 export const Monkey: Bot = {
 	name: 'Monkey',
 	move: (currentState: ChessBoard, colorToMove: Color): PlayerAction => {
-		const boardSize = currentState.length
 		const legalMoves: PlayerAction[] = []
 
-		// cycles through every square, and checks if moving that square to each
-		// other square is allowed. if so, add to the list of legal moves.
 		currentState.forEach((row, rowNumber) => row.forEach((square, columnNumber) => {
 			if (square.color === colorToMove) {
-				for (let i = 0; i < boardSize; i++) {
-					for (let j = 0; j < boardSize; j++) {
-						const hypotheticalMove: PlayerAction = {
-							from: [rowNumber, columnNumber],
-							to: [i, j],
-						}
-
-						if (isLegalMove(currentState, hypotheticalMove)) {
-							legalMoves.push(hypotheticalMove)
-						}
-					}
-				}
+				legalMoves.push(...allLegalMoves(rowNumber, columnNumber, currentState))
 			}
 		}))
 
@@ -40,4 +26,23 @@ export const Monkey: Bot = {
 
 		return legalMoves[Math.floor(Math.random() * legalMoves.length)]
 	},
+}
+
+function allLegalMoves(fromRow: number, fromColumn: number, board: ChessBoard): PlayerAction[] {
+	const legalMoves: PlayerAction[] = []
+
+	for (let toRow = 0; toRow < board.length; toRow++) {
+		for (let toColumn = 0; toColumn < board.length; toColumn++) {
+			const hypotheticalMove: PlayerAction = {
+				from: [fromRow, fromColumn],
+				to: [toRow, toColumn],
+			}
+
+			if (rules.isLegalMove(board, hypotheticalMove)) {
+				legalMoves.push(hypotheticalMove)
+			}
+		}
+	}
+
+	return legalMoves
 }
