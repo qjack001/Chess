@@ -23,14 +23,13 @@
 	import CustomButton from './components/CustomButton.vue'
 	import { StartingBoard, Color, type PlayerAction, type Players, HumanPlayer } from '@/constants'
 	import * as GameController from '@/game-controller'
-	import * as bots from './bots'
 	
 	const board = ref(StartingBoard)
 	const currentColor = ref<Color | false>(Color.WHITE)
 	const isManual = ref<boolean>(true)
 	const players = ref<Players>({
 		[Color.WHITE]: HumanPlayer,
-		[Color.BLACK]: bots.Monkey,
+		[Color.BLACK]: HumanPlayer,
 	})
 
 	const applyChanges = (next: GameController.GameState) => {
@@ -120,7 +119,7 @@
 
 	body
 	{
-		font-family: monospace;
+		font-family: Menlo, monospace;
 		background: var(--background-black);
 		margin: calc(var(--square-size) / 2);
 	}

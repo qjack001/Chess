@@ -290,7 +290,7 @@ export function isAllowedKingMove(move: PlayerAction): boolean {
 
 export function isAtEndOfBoard(destinationRow: number, currentColor: Color, boardLength: number) {
 	return ((currentColor == Color.WHITE && destinationRow == 0) ||
-		(currentColor == Color.BLACK && destinationRow == boardLength))
+		(currentColor == Color.BLACK && destinationRow == boardLength - 1))
 }
 
 /**
