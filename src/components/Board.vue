@@ -13,7 +13,7 @@
 					isOption(rowNumber, columnNumber, board) ? 'option' : '',
 				]"
 				:disabled="manualTurn !== square.color && !isOption(rowNumber, columnNumber, board)"
-				:onclick="() => select(rowNumber, columnNumber, board, manaulMove)"
+				:onclick="() => select(rowNumber, columnNumber, board, manualMove)"
 			>
 				<chess-piece v-if="isChessPiece(square)" :type="square.type" :color="square.color"/>
 			</button>
@@ -30,7 +30,7 @@
 	defineProps<{
 		board: ChessBoard,
 		manualTurn: Color | false,
-		manaulMove: (move: PlayerAction) => void
+		manualMove: (move: PlayerAction) => void
 	}>()
 
 	const selectedRow = ref(-1)
