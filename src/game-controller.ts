@@ -6,6 +6,7 @@ export interface GameState {
 	currentColor: Color | false // false when game is over
 	winner: Color | false // false if no winner
 	lastMove: {
+		piece: Piece,
 		move: PlayerAction
 		legal: boolean
 		attack: boolean
@@ -14,8 +15,9 @@ export interface GameState {
 
 export function submitAction(existingBoard: ChessBoard, currentColor: Color, move: PlayerAction): GameState {
 
-	// hack to deep-clone the board
+	// hack to deep-clone the board and color value
 	const board = JSON.parse(JSON.stringify(existingBoard))
+	const color = otherColor(otherColor(currentColor))
 
 	const invalidSquareChosen = (isOutOfBounds(existingBoard, move) ||
 			existingBoard[move.from[0]][move.from[1]].color != currentColor)
@@ -65,8 +67,12 @@ export function submitAction(existingBoard: ChessBoard, currentColor: Color, mov
 	return {
 		board: board,
 		currentColor: justWon ? false : otherColor(currentColor),
-		winner: justWon ? currentColor : false,
+		winner: justWon ? color : false,
 		lastMove: {
+			piece: {
+				type: movingPiece.type!,
+				color: movingPiece.color!,
+			},
 			move,
 			legal: true,
 			attack: (destination.color != undefined),
