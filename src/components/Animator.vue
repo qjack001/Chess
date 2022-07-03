@@ -348,7 +348,7 @@
 			shape out once everything is complete.
 		*/
 
-		delay(ANIMATION_DURATION)
+		delay(ANIMATION_DURATION * 0.6)
 			.then(() => setVisible(false, color))
 	}
 
@@ -416,7 +416,7 @@
 
 		setAnimation(true, color, true)
 		setClipPath(points, color)
-		delay(ANIMATION_DURATION)
+		delay(ANIMATION_DURATION * 0.6)
 			.then(() => setVisible(false, color))
 	}
 
@@ -479,7 +479,7 @@
 
 		setAnimation(true, color, true)
 		setClipPath(points, color)
-		delay(ANIMATION_DURATION)
+		delay(ANIMATION_DURATION * 0.6)
 			.then(() => setVisible(false, color))
 	}
 
@@ -541,7 +541,8 @@
 		bottom: 0;
 		overflow: hidden;
 		opacity: 0;
-		transition: clip-path 0ms linear, opacity 200ms ease;
+		transition: clip-path 0ms linear,
+			opacity var(--animation-duration) ease-in;
 	}
 
 	#white-clip-path.red, #black-clip-path.red
@@ -557,13 +558,13 @@
 	#white-clip-path.animate, #black-clip-path.animate
 	{
 		transition: clip-path var(--animation-duration) cubic-bezier(.5, 0, 1, .5),
-			opacity 200ms ease;
+			opacity var(--animation-duration) ease-in;
 	}
 
 	#white-clip-path.animate-finish, #black-clip-path.animate-finish
 	{
 		transition: clip-path var(--animation-duration) cubic-bezier(0, .5, .5, 1),
-			opacity 200ms ease !important;
+			opacity var(--animation-duration) ease-in !important;
 	}
 
 	#white-clip-path

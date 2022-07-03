@@ -39,6 +39,7 @@
 		[Color.BLACK]: HumanPlayer,
 	})
 
+	const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
 
 	const applyChanges = (next: GameController.GameState) => {
 		board.value = next.board
@@ -65,6 +66,7 @@
 	const runBotMove = async (currentColor: Color) => {
 		// deep clone so malicious bot cannot change source of truth
 		const currentBoard = JSON.parse(JSON.stringify(board.value))
+		await delay(600) // pretend the bot takes a second to think
 
 		await performAction(players.value[currentColor]
 			.move(currentBoard, currentColor))
