@@ -27,6 +27,8 @@
 		animate: (lastMove: GameState['lastMove']) => Promise<void>
 	}
 
+	type Point = { x: number, y: number }
+
 	const props = defineProps<{
 		controller: AnimationController,
 	}>()
@@ -73,7 +75,7 @@
 		}
 	}
 	
-	const setClipPath = (points: {x: number, y: number}[], color: Color) => {
+	const setClipPath = (points: Point[], color: Color) => {
 		const element = (color == Color.WHITE)
 				? document.getElementById('white-clip-path')
 				: document.getElementById('black-clip-path')
@@ -130,8 +132,7 @@
 			(not any actual pixel values... yet).
 		*/
 
-		type point = { x: number, y: number }
-		const points: point[] = []
+		const points: Point[] = []
 
 		/*
 			Depending on the direction  of the movement, the resulting hexagon
@@ -309,12 +310,83 @@
 			.then(() => setVisible(false, color))
 	}
 
+	/**
+	 * This function animates a horizontal chess move.
+	 * 
+	 * @param move The board coordinates the player is moving from and to.
+	 * Expects the given move to be a valid horizontal move already.
+	 * @param color The player color taking the action.
+	 */
+	const animateHorizontal = async (move: PlayerAction, color: Color) => {
+		/*
+			The process here is going to be, in broad stokes, the same as for
+			diagonal movement. So feel free to read through that method to get
+			a sense for how this works.
+		*/
+		
+		const points: Point[] = []
+
+		/*
+			There is no special considerations we need to make for the starting
+			shape (unlike w/ diagonals). Just collect the vertices of the square.
+		*/
+
+		points[0] = { x: move.from[1], y: move.from[0] }
+		points[1] = { x: points[0].x + 1, y: points[0].y }
+		points[2] = { x: points[0].x + 1, y: points[0].y + 1 }
+		points[3] = { x: points[0].x, y: points[0].y + 1 }
+
+		setAnimation(false, color)
+		setClipPath(points, color)
+		setVisible(true, color)
+		await delay(1)
+
+		/*
+			The "full shape" here is a rectangle, stretched from the left-most
+			square to the right-most square.
+		*/
+
+		points[0] = {
+			x: Math.min(move.from[1], move.to[1]), // take left-most
+			y: move.from[0], // same as destination's row (since horizontal)
+		}
+
+		points[1] = {
+			x: Math.max(move.from[1], move.to[1]) + 1, // take right-most
+			y: move.from[0],
+		}
+
+		points[2] = { x: points[1].x, y: points[1].y + 1 }
+		points[3] = { x: points[0].x, y: points[0].y + 1 }
+
+		setAnimation(true, color)
+		setClipPath(points, color)
+		await delay(ANIMATION_DURATION)
+
+		/*
+			Set to destination square to finish.
+		*/
+		
+		points[0] = { x: move.to[1], y: move.to[0] }
+		points[1] = { x: points[0].x + 1, y: points[0].y }
+		points[2] = { x: points[0].x + 1, y: points[0].y + 1 }
+		points[3] = { x: points[0].x, y: points[0].y + 1 }
+
+		setAnimation(true, color, true)
+		setClipPath(points, color)
+		delay(ANIMATION_DURATION)
+			.then(() => setVisible(false, color))
+	}
+
 	const animateMovement = async (move: PlayerAction, color: Color) => {
 		const verticalMovement = Math.abs(move.to[0] - move.from[0])
 		const horizontalMovement = Math.abs(move.to[1] - move.from[1])
 
 		if (verticalMovement == horizontalMovement) {
 			await animateDiagonal(move, color)
+		}
+		else if (verticalMovement == 0) {
+			await animateHorizontal(move, color)
 		}
 	}
 
