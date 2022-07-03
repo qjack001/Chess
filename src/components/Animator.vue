@@ -117,6 +117,12 @@
 	const animateMovement = async (move: PlayerAction, color: Color) => {
 	}
 
+	controller.value.animate = async (lastMove: GameState['lastMove']) => {
+		const { move, attack, piece } = lastMove
+
+		positionPiece(piece, move.to)
+		await animateMovement(move, piece.color)
+		if (attack) { shakeScreen() }
 	}
 </script>
 
