@@ -11,7 +11,7 @@
 	import ChessPiece from '@/components/ChessPiece.vue'
 	
 	export type AnimationController = {
-		animate: (lastMove: GameState['lastMove']) => void
+		animate: (lastMove: GameState['lastMove']) => Promise<void>
 	}
 
 	const props = defineProps<{

@@ -29,7 +29,7 @@
 
 
 	// instantiate with a placeholder animate function
-	const animationController = ref<AnimationController>({ animate: () => {} })
+	const animationController = ref<AnimationController>({ animate: async () => {} })
 
 	const board = ref(StartingBoard)
 	const currentColor = ref<Color | false>(Color.WHITE)
