@@ -1,4 +1,4 @@
-import { Color, Type, type ChessBoard, type PlayerAction } from "@/constants";
+import { Color, Type, type ChessBoard, type Piece, type PlayerAction } from "@/constants";
 import { isOutOfBounds, otherColor, isLegalMove, isAtEndOfBoard } from "@/rules";
 
 export interface GameState {
@@ -41,6 +41,10 @@ export function submitAction(existingBoard: ChessBoard, currentColor: Color, mov
 			currentColor: justKilledKing ? false : otherColor(currentColor),
 			winner: justKilledKing ? otherColor(currentColor) : false,
 			lastMove: {
+				piece: {
+					color,
+					type: existingBoard[move.from[0]][move.from[1]].type ?? Type.PAWN
+				},
 				move,
 				legal: false,
 				attack: false,
