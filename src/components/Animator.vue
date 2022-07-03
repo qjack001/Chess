@@ -44,7 +44,13 @@
 
 
 	controller.value.animate = async (lastMove: GameState['lastMove']) => {
-		const { move, attack, piece } = lastMove
+		const { move, attack, piece, legal } = lastMove
+
+		if (!legal) {
+			positionPiece(piece, move.from)
+			await animateIllegalMovement(move, piece.color)
+			return
+		}
 
 		positionPiece(piece, move.to)
 		await animateMovement(move, piece.color)
@@ -132,6 +138,18 @@
 		}
 
 		element.classList.toggle('visible', isVisible)
+	}
+
+	const setColorRed = (isRed: boolean, color: Color) => {
+		const element = (color == Color.WHITE)
+				? document.getElementById('white-clip-path')
+				: document.getElementById('black-clip-path')
+
+		if (!element) {
+			return
+		}
+
+		element.classList.toggle('red', isRed)
 	}
 
 	const shakeScreen = async () => {
@@ -410,7 +428,8 @@
 	 * @param color The player color taking the action.
 	 */
 	const animateVertical = async (move: PlayerAction, color: Color) => {
-				const points: Point[] = []
+		
+		const points: Point[] = []
 
 		/*
 			There is no special considerations we need to make for the starting
@@ -464,7 +483,26 @@
 			.then(() => setVisible(false, color))
 	}
 
-	
+	const animateIllegalMovement = async (move: PlayerAction, color: Color) => {
+		
+		setColorRed(true, color)
+		const points: Point[] = []
+
+		points[0] = { x: move.from[1], y: move.from[0] }
+		points[1] = { x: points[0].x + 1, y: points[0].y }
+		points[2] = { x: points[0].x + 1, y: points[0].y + 1 }
+		points[3] = { x: points[0].x, y: points[0].y + 1 }
+
+		setAnimation(false, color)
+		setClipPath(points, color)
+		setVisible(true, color)
+		
+		await delay(ANIMATION_DURATION * 0.6)
+			.then(() => setVisible(false, color))
+
+		delay(ANIMATION_DURATION)
+			.then(() => setColorRed(false, color))
+	}
 </script>
 
 <style scoped>
@@ -504,6 +542,11 @@
 		overflow: hidden;
 		opacity: 0;
 		transition: clip-path 0ms linear, opacity 200ms ease;
+	}
+
+	#white-clip-path.red, #black-clip-path.red
+	{
+		background-image: linear-gradient(#ea0000, #b10000);
 	}
 
 	#white-clip-path.visible, #black-clip-path.visible
