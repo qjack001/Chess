@@ -37,18 +37,86 @@
 		[Color.BLACK]: Type.PAWN,
 	})
 
-	controller.value.animate = async (move: GameState['lastMove']) => {
-		const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
-		
-		
-		if (move.attack) {
-			document.body.classList.add('shake')
-			setTimeout(() => {
-				document.body.classList.remove('shake')
-			}, 300)
+	const ANIMATION_DURATION = 300 // milliseconds
+	const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
+
+	const positionPiece = (piece: Piece, location: [number, number]) => {
+		const element = (piece.color == Color.WHITE)
+				? document.getElementById('white-piece')
+				: document.getElementById('black-piece')
+
+
+		if (!element) {
+			return
 		}
 
-		await delay(100)
+		pieceType.value[piece.color] = piece.type
+		element.style.top = `calc(${location[0]} * var(--square-size))`
+		element.style.left = `calc(${location[1]} * var(--square-size))`
+	}
+
+	const setAnimation = (turnAnimationOn: boolean, color: Color, isEnd?: boolean) => {
+		const element = (color == Color.WHITE)
+				? document.getElementById('white-clip-path')
+				: document.getElementById('black-clip-path')
+		
+		if (!element) {
+			return
+		}
+
+		if (turnAnimationOn) {
+			element.classList.add(isEnd ? 'animate-finish' : 'animate')
+		}
+		else {
+			element.classList.remove('animate')
+			element.classList.remove('animate-finish')
+		}
+	}
+	
+	const setClipPath = (points: {x: number, y: number}[], color: Color) => {
+		const element = (color == Color.WHITE)
+				? document.getElementById('white-clip-path')
+				: document.getElementById('black-clip-path')
+
+		if (!element) {
+			return
+		}
+		
+		let clipPath = 'polygon('
+		points.forEach((point, i) => {
+			clipPath = clipPath +
+				`calc(${point.x} * var(--square-size)) calc(${point.y} * var(--square-size))`
+			
+			if (i != points.length - 1) {
+				clipPath += ','
+			}
+		})
+		clipPath += ')'
+		
+		element.style.clipPath = clipPath
+	}
+
+	const setVisible = (isVisible: boolean, color: Color) => {
+		const element = (color == Color.WHITE)
+				? document.getElementById('white-clip-path')
+				: document.getElementById('black-clip-path')
+
+		if (!element) {
+			return
+		}
+
+		element.classList.toggle('visible', isVisible)
+	}
+
+	const shakeScreen = async () => {
+		document.body.classList.add('shake')
+		await delay(300)
+		document.body.classList.remove('shake')
+	}
+
+	const animateMovement = async (move: PlayerAction, color: Color) => {
+	}
+
 	}
 </script>
 
