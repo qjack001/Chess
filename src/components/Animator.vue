@@ -114,7 +114,208 @@
 		document.body.classList.remove('shake')
 	}
 
+	/**
+	 * This function animates a diagonal chess move.
+	 * 
+	 * @param move The board coordinates the player is moving from and to.
+	 * Expects the given move to be a valid diagonal move already.
+	 * @param color The player color taking the action.
+	 */
+	const animateDiagonal = async (move: PlayerAction, color: Color) => {
+		/*
+			Diagonals are shaped like stretched-out hexagons. We will define six
+			points for the clip-path, working clock-wise around the shape to
+			assign each vertex. The points lie on the chess board's grid, so we
+			only have to keep track of their row/column position on the board
+			(not any actual pixel values... yet).
+		*/
+
+		type point = { x: number, y: number }
+		const points: point[] = []
+
+		/*
+			Depending on the direction  of the movement, the resulting hexagon
+			is either right-leaning or left-leaning. The difference is important,
+			as it changes how the points are distributed around the shape. For
+			right-leaning diagonals, the 3rd point (#2) sits on the upper-most
+			square's bottom-right corner, & the 6th point (#5) sits on the lower
+			square's top-left corner. As you can see, this is not the case for 
+			left-leaning diagonals. The points are zero-indexed to make mapping
+			to the array more clear.
+
+            Right-leaning:    Left-leaning:
+
+			     0 ---- 1     0 ---- 1
+                /       |     |       \
+			   /        |     |        \
+			  /         2     5         \
+			 /         /       \         \
+			5         /         \         2
+			|        /           \        |
+			|       /             \       |
+			4 ---- 3               4 ---- 3
+		
+			Any piece moving in a *positive* horizontal direction and *negative*
+			vertical direction will create a right-leaning diagonal. As will any
+			piece moving in a *negative* horizontal and *positive* vertical
+			direction. However, if the directions are homogenous (both positive
+			or both negative), we know it must be left-leaning. The actual
+			direction the piece is moving along this diagonal doesn't matter.
+		*/
+
+		const verticalMovement = move.to[0] - move.from[0]
+		const horizontalMovement = move.to[1] - move.from[1]
+		const isRightLeaning = (
+			(verticalMovement > 0 && horizontalMovement < 0) ||
+			(verticalMovement < 0 && horizontalMovement > 0)
+		)
+		
+		/*
+			In order to animate out into this final shape properly, the starting
+			position must be set up with this later arrangement in mind. We want
+			the diagonal to grow smoothly out from the starting square. Thus, if
+			we're right-leaning, we want to bisect the hexagon between points
+			5-to-0 and 2-to-3. This collapses the hexagon into a square, but with
+			doubled-up points on the corners that need to grow. For the left-
+			leaning hexagons, bisect between points 4-to-5 and 1-to-2.
+
+			Right-leaning:    Left-leaning:
+
+			 0/5 --- 1          0 --- 1/2
+			  |      |          |      |
+			  |      |          |      |
+			  4 --- 2/3        4/5 --- 3
+
+			This really just effects where we draw points 2 and 5. All the other
+			points are the same regardless: just draw the square from the initial
+			position (the `move.from` coordinates will be the coordinates of the
+			top-left corner of the square).
+		*/
+
+		points[0] = { x: move.from[1], y: move.from[0] }
+		points[1] = { x: points[0].x + 1, y: points[0].y }
+		points[3] = { x: points[0].x + 1, y: points[0].y + 1 }
+		points[4] = { x: points[0].x, y: points[0].y + 1 }
+
+		points[2] = (isRightLeaning)
+				? points[3]
+				: points[1]
+
+		points[5] = (isRightLeaning)
+				? points[0]
+				: points[4]
+
+		/*
+			Before committing these starting points to the clip-path, make sure
+			to turn animations OFF. This will snap the shape into position
+			immediately, rather than slowly animating from its previous state.
+		*/
+
+		setAnimation(false, color)
+		setClipPath(points, color)
+		setVisible(true, color)
+		await delay(1) // wait a sec so the clip-path can be set before future
+		               // steps turn animations on
+
+		/*
+			Now we can construct the full hexagon, referring back to those two
+			diagrams above. We need to figure out which square (either the "from"
+			or the "to") is the upper square, so that we know which coordinates
+			to use for the 0-point. This can be found by checking which row-value
+			is larger -- the smaller row-value is the upper square (since the
+			grid goes from top-to-bottom). We will refer to the "to" position as
+			the "destination".
+		*/
+
+		const destinationIsUpperSquare = (move.to[0] < move.from[0])
+
+		points[0] = (destinationIsUpperSquare)
+				? { x: move.to[1], y: move.to[0] }
+				: { x: move.from[1], y: move.from[0] }
+
+		/*
+			Point-3 will be used as reference for all the other bottom square
+			coordinates, similar to how point-0 is used for the upper square.
+			Note that we must add 1 to the x and y values, since we are getting
+			the top-left corner of the square (which may actually sit *inside*
+			the hexagon), and we want the bottom-right corner.
+		*/
+		
+		points[3] = (destinationIsUpperSquare)
+				? { x: move.from[1] + 1, y: move.from[0] + 1 }
+				: { x: move.to[1] + 1, y: move.to[0] + 1 }
+
+		/*
+			The remaining vertices can now be calculated off of those two
+			reference points.
+		*/
+
+		points[1] = { x: points[0].x + 1, y: points[0].y }
+		points[4] = { x: points[3].x - 1, y: points[3].y }
+
+		if (isRightLeaning) {
+			points[2] = { x: points[0].x + 1, y: points[0].y + 1 }
+			points[5] = { x: points[3].x - 1, y: points[3].y - 1 }
+		}
+		else {
+			points[2] = { x: points[3].x, y: points[3].y - 1 }
+			points[5] = { x: points[0].x, y: points[0].y + 1 }
+		}
+
+		/*
+			Now we *do* want animations on, so the transition is smooth and...
+			animated (duh).
+		*/
+
+		setAnimation(true, color)
+		setClipPath(points, color)
+
+		/*
+			Once the animation into the full hexagon is complete, we want to
+			shrink it back down to a square; this time, the destination square.
+			We will follow the same process we used to find the starting square
+			points and make sure they line-up with the full hexagon to ensure a
+			fluid animation. However, this time using the "to" location.
+		*/
+
+		await delay(ANIMATION_DURATION)
+
+		points[0] = { x: move.to[1], y: move.to[0] }
+		points[1] = { x: points[0].x + 1, y: points[0].y }
+		points[3] = { x: points[0].x + 1, y: points[0].y + 1 }
+		points[4] = { x: points[0].x, y: points[0].y + 1 }
+
+		points[2] = (isRightLeaning)
+				? points[3]
+				: points[1]
+
+		points[5] = (isRightLeaning)
+				? points[0]
+				: points[4]
+
+		setAnimation(true, color, true)
+		setClipPath(points, color)
+
+		/*
+			The function will return here. The animation into the full hexagon
+			will be completed (we await-ed that one), but the animation into the
+			destination square will still be on-going. This allows us to start
+			doing other stuff while it animates out (like shake the screen and
+			actually move the board pieces). The call-back below will fade the
+			shape out once everything is complete.
+		*/
+
+		delay(ANIMATION_DURATION)
+			.then(() => setVisible(false, color))
+	}
+
 	const animateMovement = async (move: PlayerAction, color: Color) => {
+		const verticalMovement = Math.abs(move.to[0] - move.from[0])
+		const horizontalMovement = Math.abs(move.to[1] - move.from[1])
+
+		if (verticalMovement == horizontalMovement) {
+			await animateDiagonal(move, color)
+		}
 	}
 
 	controller.value.animate = async (lastMove: GameState['lastMove']) => {
