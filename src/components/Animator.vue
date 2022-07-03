@@ -42,6 +42,30 @@
 	const ANIMATION_DURATION = 300 // milliseconds
 	const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
 
+
+	controller.value.animate = async (lastMove: GameState['lastMove']) => {
+		const { move, attack, piece } = lastMove
+
+		positionPiece(piece, move.to)
+		await animateMovement(move, piece.color)
+		if (attack) { shakeScreen() }
+	}
+
+	const animateMovement = async (move: PlayerAction, color: Color) => {
+		const verticalMovement = Math.abs(move.to[0] - move.from[0])
+		const horizontalMovement = Math.abs(move.to[1] - move.from[1])
+
+		if (verticalMovement == horizontalMovement) {
+			await animateDiagonal(move, color)
+		}
+		else if (verticalMovement == 0) {
+			await animateHorizontal(move, color)
+		}
+		else if (horizontalMovement == 0) {
+			await animateVertical(move, color)
+		}
+	}
+
 	const positionPiece = (piece: Piece, location: [number, number]) => {
 		const element = (piece.color == Color.WHITE)
 				? document.getElementById('white-piece')
@@ -366,7 +390,7 @@
 		/*
 			Set to destination square to finish.
 		*/
-		
+
 		points[0] = { x: move.to[1], y: move.to[0] }
 		points[1] = { x: points[0].x + 1, y: points[0].y }
 		points[2] = { x: points[0].x + 1, y: points[0].y + 1 }
@@ -378,25 +402,69 @@
 			.then(() => setVisible(false, color))
 	}
 
-	const animateMovement = async (move: PlayerAction, color: Color) => {
-		const verticalMovement = Math.abs(move.to[0] - move.from[0])
-		const horizontalMovement = Math.abs(move.to[1] - move.from[1])
+	/**
+	 * This function animates a horizontal chess move.
+	 * 
+	 * @param move The board coordinates the player is moving from and to.
+	 * Expects the given move to be a valid horizontal move already.
+	 * @param color The player color taking the action.
+	 */
+	const animateVertical = async (move: PlayerAction, color: Color) => {
+				const points: Point[] = []
 
-		if (verticalMovement == horizontalMovement) {
-			await animateDiagonal(move, color)
+		/*
+			There is no special considerations we need to make for the starting
+			shape (unlike w/ diagonals). Just collect the vertices of the square.
+		*/
+
+		points[0] = { x: move.from[1], y: move.from[0] }
+		points[1] = { x: points[0].x + 1, y: points[0].y }
+		points[2] = { x: points[0].x + 1, y: points[0].y + 1 }
+		points[3] = { x: points[0].x, y: points[0].y + 1 }
+
+		setAnimation(false, color)
+		setClipPath(points, color)
+		setVisible(true, color)
+		await delay(1)
+
+		/*
+			The "full shape" here is a rectangle, stretched from the left-most
+			square to the right-most square.
+		*/
+
+		points[0] = {
+			x: move.from[1], // same as destination's column (since vertical)
+			y: Math.min(move.from[0], move.to[0]), // take upper square (lower value)
 		}
-		else if (verticalMovement == 0) {
-			await animateHorizontal(move, color)
+
+		points[3] = {
+			x: move.from[1],
+			y: Math.max(move.from[0], move.to[0]) + 1, // lowest square (higher value)
 		}
+
+		points[1] = { x: points[0].x + 1, y: points[0].y }
+		points[2] = { x: points[3].x + 1, y: points[3].y }
+
+		setAnimation(true, color)
+		setClipPath(points, color)
+		await delay(ANIMATION_DURATION)
+
+		/*
+			Set to destination square to finish.
+		*/
+
+		points[0] = { x: move.to[1], y: move.to[0] }
+		points[1] = { x: points[0].x + 1, y: points[0].y }
+		points[2] = { x: points[0].x + 1, y: points[0].y + 1 }
+		points[3] = { x: points[0].x, y: points[0].y + 1 }
+
+		setAnimation(true, color, true)
+		setClipPath(points, color)
+		delay(ANIMATION_DURATION)
+			.then(() => setVisible(false, color))
 	}
 
-	controller.value.animate = async (lastMove: GameState['lastMove']) => {
-		const { move, attack, piece } = lastMove
-
-		positionPiece(piece, move.to)
-		await animateMovement(move, piece.color)
-		if (attack) { shakeScreen() }
-	}
+	
 </script>
 
 <style scoped>
