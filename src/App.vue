@@ -66,7 +66,7 @@
 	const runBotMove = async (currentColor: Color) => {
 		// deep clone so malicious bot cannot change source of truth
 		const currentBoard = JSON.parse(JSON.stringify(board.value))
-		await delay(600) // pretend the bot takes a second to think
+		await delay(400) // pretend the bot takes a second to think
 
 		await performAction(players.value[currentColor]
 			.move(currentBoard, currentColor))

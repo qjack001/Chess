@@ -70,6 +70,9 @@
 		else if (horizontalMovement == 0) {
 			await animateVertical(move, color)
 		}
+		else {
+			await animateLShaped(move, color)
+		}
 	}
 
 	const positionPiece = (piece: Piece, location: [number, number]) => {
@@ -481,6 +484,167 @@
 		setClipPath(points, color)
 		delay(ANIMATION_DURATION * 0.6)
 			.then(() => setVisible(false, color))
+	}
+
+	/**
+	 * This function animates the L-shaped moves that knights make.
+	 * 
+	 * @param move The board coordinates the player is moving from and to.
+	 * Expects the given move to be a valid L-shaped move already.
+	 * @param color The player color taking the action.
+	 */
+	const animateLShaped = async (move: PlayerAction, color: Color) => {
+		
+		/*
+			Now for the tricky bit
+		*/
+		
+		const verticalMovement = move.to[0] - move.from[0]
+		const horizontalMovement = move.to[1] - move.from[1]
+
+		const points: Point[] = []
+
+		points[0] = { x: move.from[1], y: move.from[0] }
+		points[1] = { x: points[0].x + 1, y: points[0].y }
+		points[2] = { x: points[0].x + 1, y: points[0].y + 1 }
+
+		if (horizontalMovement > 0) {
+			points[3] = {...points[2]}
+			points[4] = {...points[2]}
+			points[5] = { x: points[0].x, y: points[0].y + 1 }
+		}
+		else {
+			points[3] = { x: points[0].x, y: points[0].y + 1 }
+			points[4] = {...points[3]}
+			points[5] = {...points[3]}
+		}
+		
+		setAnimation(false, color)
+		setClipPath(points, color)
+		setVisible(true, color)
+		await delay(1)
+
+		points[0] = {
+			x: move.from[1],
+			y: Math.min(move.from[0], move.to[0]),
+		}
+
+		points[1] = { x: points[0].x + 1, y: points[0].y }
+
+		if (horizontalMovement > 0) {
+			points[2] = {
+				x: points[0].x + 1,
+				y: (verticalMovement > 0)
+					? Math.max(move.from[0], move.to[0])
+					: points[0].y + 1
+			}
+
+			points[3] = {...points[2]}
+
+			points[4] = {
+				x: points[0].x + 1,
+				y: Math.max(move.from[0], move.to[0]) + 1,
+			}
+
+			points[5] = { x: points[0].x, y: points[4].y }
+		}
+		else {
+			points[2] = {
+				x: points[0].x + 1,
+				y: Math.max(move.from[0], move.to[0]) + 1,
+			}
+
+			points[3] = { x: points[0].x, y: points[2].y }
+
+			points[4] = {
+				x: points[0].x,
+				y: (verticalMovement > 0)
+					? Math.max(move.from[0], move.to[0])
+					: points[0].y + 1
+			}
+
+			points[5] = {...points[4]}
+		}
+
+		setAnimation(true, color)
+		setClipPath(points, color)
+		await delay(ANIMATION_DURATION + 50)
+
+		if (horizontalMovement > 0) {
+			if (verticalMovement > 0) {
+				points[3] = {...points[3], x: move.to[1] + 1}
+				points[4] = {...points[4], x: move.to[1] + 1}
+			}
+			else {
+				points[1] = {...points[1], x: move.to[1] + 1}
+				points[2] = {...points[2], x: move.to[1] + 1}
+			}
+		}
+		else {
+			if (verticalMovement > 0) {
+				points[3] = {...points[3], x: move.to[1]}
+				points[4] = {...points[4], x: move.to[1]}
+			}
+			else {
+				points[0] = {...points[0], x: move.to[1]}
+				points[5] = {...points[5], x: move.to[1]}
+			}
+		}
+
+		setAnimation(true, color)
+		setClipPath(points, color)
+		await delay(ANIMATION_DURATION + 50)
+
+		if (verticalMovement > 0) {
+			points[0] = {...points[0], y: move.to[0]}
+			points[1] = {...points[1], y: move.to[0]}
+		}
+		else {
+			if (horizontalMovement > 0) {
+				points[4] = {...points[4], y: move.to[0] + 1}
+				points[5] = {...points[5], y: move.to[0] + 1}
+			}
+			else {
+				points[2] = {...points[2], y: move.to[0] + 1}
+				points[3] = {...points[3], y: move.to[0] + 1}
+			}
+		}
+
+		setAnimation(true, color)
+		setClipPath(points, color)
+		delay(ANIMATION_DURATION + 50).then(() => {
+			if (verticalMovement > 0) {
+				if (horizontalMovement > 0) {
+					points[0] = { x: move.to[1], y: move.to[0] }
+					points[1] = {...points[0]}
+					points[2] = { x: points[0].x + 1, y: points[0].y }
+					points[3] = {...points[2]}
+					points[4] = { x: points[0].x + 1, y: points[0].y + 1 }
+					points[5] = { x: points[0].x, y: points[0].y + 1 }
+				}
+				else {
+					points[4] = { x: move.to[1], y: move.to[0] }
+					points[5] = {...points[4]}
+					points[0] = { x: points[4].x + 1, y: points[4].y }
+					points[1] = {...points[0]}
+					points[2] = { x: points[4].x + 1, y: points[4].y + 1 }
+					points[3] = { x: points[4].x, y: points[4].y + 1 }
+				}
+			}
+			else {
+				points[0] = { x: move.to[1], y: move.to[0] }
+				points[1] = { x: points[0].x + 1, y: points[0].y }
+				points[2] = { x: points[0].x + 1, y: points[0].y + 1 }
+				points[3] = {...points[2]}
+				points[4] = { x: points[0].x, y: points[0].y + 1 }
+				points[5] = {...points[4]}
+			}
+
+			setAnimation(true, color, true)
+			setClipPath(points, color)
+			delay(ANIMATION_DURATION * 0.6)
+				.then(() => setVisible(false, color))
+		})
 	}
 
 	const animateIllegalMovement = async (move: PlayerAction, color: Color) => {
