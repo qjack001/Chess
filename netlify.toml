@@ -1,0 +1,13 @@
+[build]
+	command = "npx pnpm build"
+	publish = "dist"
+
+[build.environment]
+	NODE_VERSION = "16"
+	NPM_FLAGS = "--version" # prevent auto npm install
+
+[build.processing]
+	skip_processing = true
+
+[[plugins]]
+	package = "./plugins/pnpm-preinstaller"
