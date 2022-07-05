@@ -42,7 +42,7 @@ export interface Bot extends Player {
 export const HumanPlayer: Player = {
 	name: 'Human Player',
 	isManual: true,
-	move: (currentState: ChessBoard, colorToMove: Color): PlayerAction => {
+	move: (_currentState: ChessBoard, _colorToMove: Color): PlayerAction => {
 		throw new Error('HumanPlayer does not actually have a move action.')
 	},
 }

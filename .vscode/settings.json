@@ -15,10 +15,13 @@
 		"pnpm-lock.yaml": true,
 		"node_modules": true,
 		"dist": true,
+		".vite": true,
+		"plugins": true,
 		".eslintrc": true,
 		"vite.config.ts": true,
 		"tsconfig.json": true,
 		"tsconfig.config.json": true,
+		"netlify.toml": true,
 	},
 	"editor.tokenColorCustomizations": {
 		"textMateRules": [{
