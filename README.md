@@ -1,11 +1,11 @@
 This project is a simple chess program — with hooks allowing you to easily create (and play against)
 your own chess bot. See the [How To Add a Bot](./src/bots/how-to-add-a-bot.md) document for specific
 instructions on how to do so. Once it's been added, you can play against it or watch it play against
-other bots at: [https://chess-bot.netlify.app].
+other bots at [chess-bot.netlify.app](https://chess-bot.netlify.app).
 
 The project uses [_Los Alamos_ chess](https://en.wikipedia.org/wiki/Los_Alamos_chess) (chess without
 the bishop) as an homage to the first chess-playing computer program. The look of the game (the gold
-swiping chess animations, in particular) are inspired by [the FIDE 2021 branding](shorturl.at/CGHO2)
+swiping animations, in particular) are inspired by [the FIDE branding](https://tinyurl.com/fide2021)
 designed by [Morillas](https://www.morillas.com).
 
 ### Operational Notes
