@@ -1,4 +1,4 @@
-import { type PlayerAction, type ChessBoard, Type, Color } from '@/constants'
+import { type PlayerAction, type ChessBoard, Type, Color, type Piece } from '@/constants'
 
 
 /**
@@ -288,6 +288,9 @@ export function isAllowedKingMove(move: PlayerAction): boolean {
 	return (verticalMovement <= 1 && horizontalMovement <= 1)
 }
 
+/**
+ * Whether or not the given row is at the end of the board for the given color.
+ */
 export function isAtEndOfBoard(destinationRow: number, currentColor: Color, boardLength: number) {
 	return ((currentColor == Color.WHITE && destinationRow == 0) ||
 		(currentColor == Color.BLACK && destinationRow == boardLength - 1))
@@ -300,6 +303,32 @@ export function otherColor(input: Color): Color {
 	return (input == Color.WHITE)
 			? Color.BLACK
 			: Color.WHITE
+}
+
+/**
+ * Returns a string representation of the given action in "algebraic notation".
+ * See: https://en.wikipedia.org/wiki/Algebraic_notation_(chess)
+ */
+export function toStandardChessNotation(piece: Piece, move: PlayerAction): string {
+	
+	const renderPiece = (piece: Piece) => {
+		switch (piece.type) {
+			case Type.KING:   return '♚'
+			case Type.QUEEN:  return '♛'
+			case Type.BISHOP: return '♝'
+			case Type.KNIGHT: return '♞'
+			case Type.ROOK:   return '♜'
+			default:          return '' // pawns do not receive a symbol
+		}
+	}
+
+	const renderCoordinates = (coordinates: [number, number]) => {
+		const x = String.fromCharCode(97 + coordinates[1])
+		const y = 6 - coordinates[0]
+		return `${x}${y}`
+	}
+
+	return `${renderPiece(piece)}${renderCoordinates(move.from)}${renderCoordinates(move.to)}`
 }
 
 /**

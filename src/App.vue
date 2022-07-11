@@ -21,6 +21,7 @@
 <script setup lang="ts">
 	import { ref } from 'vue';
 	import { StartingBoard, Color, type PlayerAction, type Players, HumanPlayer } from '@/constants'
+	import { toStandardChessNotation } from '@/rules'
 	import * as GameController from '@/game-controller'
 	import Board from '@/components/Board.vue'
 	import Animator, { type AnimationController } from '@/components/Animator.vue'
@@ -57,6 +58,8 @@
 		const result = GameController.submitAction(board.value, currentColor.value, move)
 		await animationController.value.animate(result.lastMove)
 		applyChanges(result)
+
+		console.log(toStandardChessNotation(result.lastMove.piece, result.lastMove.move))
 
 		if (result.winner !== false) {
 			alert(players.value[result.winner].name + ' wins!')
