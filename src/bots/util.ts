@@ -11,13 +11,26 @@ export type AllLegalMovesProps = {
 	order: by,
 }
 
-export function allLegalMoves(currentState: ChessBoard, colorToMove: Color, props: AllLegalMovesProps): PlayerAction[] {
+/**
+ * Quickstart function for creating a simple bot. Returns all the possible moves
+ * the given color can make. These moves are optionally sorted according to the
+ * `sortBy` metric provided (ordered according to the `order` prop).
+ * 
+ * @param currentState the chessboard currently in need of a move
+ * @param colorToMove the player who is making the turn
+ * @param props optional sorting function
+ */
+export function allLegalMoves(currentState: ChessBoard, colorToMove: Color, props?: AllLegalMovesProps): PlayerAction[] {
 	const sortFunction = (a: PlayerAction, b: PlayerAction) => {
-		if (props.sortBy(a, currentState) < props.sortBy(b, currentState)) {
-			return (props.order == by.HIGHEST_FIRST) ? 1 : -1
+		if (props!.sortBy(a, currentState) == props!.sortBy(b, currentState)) {
+			return (Math.random() < 0.5) ? 1 : -1
 		}
-
-		return (props.order == by.LOWEST_FIRST) ? 1 : -1
+		else if (props!.sortBy(a, currentState) < props!.sortBy(b, currentState)) {
+			return (props!.order == by.HIGHEST_FIRST) ? 1 : -1
+		}
+		else {
+			return (props!.order == by.LOWEST_FIRST) ? 1 : -1
+		}
 	}
 	
 	const moves: PlayerAction[] = []
@@ -28,9 +41,16 @@ export function allLegalMoves(currentState: ChessBoard, colorToMove: Color, prop
 		}
 	}))
 	
+	if (props == undefined) {
+		return moves
+	}
+
 	return moves.sort(sortFunction)
 }
 
+/**
+ * Returns all possible moves from the given row/column on the board.
+ */
 export function legalMoves(row: number, column: number, board: ChessBoard): PlayerAction[] {
 	const legalMoves: PlayerAction[] = []
 
@@ -50,6 +70,9 @@ export function legalMoves(row: number, column: number, board: ChessBoard): Play
 	return legalMoves
 }
 
+/**
+ * Returns a chessboard with the given move applied.
+ */
 export function visualizeHypothetical(move: PlayerAction, board: ChessBoard): ChessBoard {
 	// hack to deep-clone the board
 	const newBoard: ChessBoard = JSON.parse(JSON.stringify(board))
