@@ -1,9 +1,10 @@
 import { type ChessBoard, type Color, type Bot, type PlayerAction, Type } from '@/constants'
 import { allLegalMoves, by, visualizeHypothetical } from './util'
-import * as rules from '@/rules'
 
 /**
- *
+ * Sheepdog tries to wrangle its pieces together. It selects the move that has the
+ * lowest total distance between all of its pieces and its king. It has no objective
+ * but to keep itself bundled together.
  */
 export const Sheepdog: Bot = {
 	name: 'Sheepdog',

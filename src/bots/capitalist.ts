@@ -70,7 +70,8 @@ const VALUE_OF_IMPORTANCE = 0.3 // how much the system values status
 const MAX_DEPTH = 3 // how many steps ahead the system can look
 
 /**
- * TODO
+ * Each piece is evaluated as an individual, considered for its potential to generate
+ * profit, not benefit the bot is any deeper way.
  */
 function evaluateIndividual(piece: Piece, row: number, column: number, board: ChessBoard): RankedMove {
 	
