@@ -115,6 +115,13 @@
 
 	body
 	{
+		/*
+		 * Set square-size to 1/7th of the window's shortest width (up to a
+		 * maximum of 120px). This way, the full board can always be displayed,
+		 * with half of a square's width of padding on either side. 
+		 */
+		--square-size: min(120px, 100vmin / calc(var(--num-of-squares) + 1));
+
 		font-family: Menlo, monospace;
 		background: var(--background-black);
 		margin: calc(var(--square-size) / 2);
