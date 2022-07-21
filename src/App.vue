@@ -40,6 +40,8 @@
 		[Color.BLACK]: HumanPlayer,
 	})
 
+	document.body.style.setProperty('--num-of-squares', `${board.value.length}`);
+
 	const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
 
 	const applyChanges = (next: GameController.GameState) => {
@@ -103,13 +105,6 @@
 <style>
 	:root
 	{
-		/*
-		 * Set square-size to 1/7th of the window's shortest width (up to a
-		 * maximum of 120px). This way, the full board can always be displayed,
-		 * with half of a square's width of padding on either side. 
-		 */
-		--square-size: min(120px, 100vmin/7);
-
 		--white: #999289;
 		--black: #312e32;
 		--background-white: #0f0e0e;

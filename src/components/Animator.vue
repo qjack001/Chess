@@ -674,10 +674,10 @@
 	{
 		position: absolute;
 		top: 0;
-		left: calc(50vw - (var(--square-size) * 3.5));
+		left: calc(50vw - (var(--square-size) * ((var(--num-of-squares) + 1) / 2)));
 		z-index: 9;
-		width: calc(var(--square-size) * 6);
-		height: calc(var(--square-size) * 6);
+		width: calc(var(--square-size) * var(--num-of-squares));
+		height: calc(var(--square-size) * var(--num-of-squares));
 		pointer-events: none;
 	}
 

@@ -91,8 +91,8 @@
 	section.game-board
 	{
 		display: grid;
-		grid-template-columns: repeat(6, 1fr);
-		width: calc(6 * var(--square-size));
+		grid-template-columns: repeat(var(--num-of-squares), 1fr);
+		width: calc(var(--num-of-squares) * var(--square-size));
 		margin: auto;
 	}
 
