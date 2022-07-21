@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 	import { ref } from 'vue';
-	import { StartingBoard, Color, type PlayerAction, type Players, HumanPlayer } from '@/constants'
+	import { StartingBoard, FullSized, Color, type PlayerAction, type Players, HumanPlayer } from '@/constants'
 	import { toStandardChessNotation } from '@/rules'
 	import * as GameController from '@/game-controller'
 	import Board from '@/components/Board.vue'
@@ -28,11 +28,12 @@
 	import PlayerSelector from '@/components/PlayerSelector.vue'
 	import CustomButton from '@/components/CustomButton.vue'
 
+	const urlParams = new URLSearchParams(window.location.search)
 
 	// instantiate with a placeholder animate function
 	const animationController = ref<AnimationController>({ animate: async () => {} })
 
-	const board = ref(StartingBoard)
+	const board = ref(urlParams.has('full') ? FullSized : StartingBoard)
 	const currentColor = ref<Color | false>(Color.WHITE)
 	const isManual = ref<boolean>(true)
 	const players = ref<Players>({
