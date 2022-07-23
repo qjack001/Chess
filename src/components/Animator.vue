@@ -19,8 +19,10 @@
 
 <script setup lang="ts">
 	import { ref, toRefs } from 'vue'
+	import { useSound } from '@vueuse/sound'
 	import { Type, Color, type Piece, type PlayerAction } from '@/constants'
 	import type { GameState } from '@/game-controller'
+	import type { SpriteMap } from '@vueuse/sound/dist/esm/src/types'
 	import ChessPiece from '@/components/ChessPiece.vue'
 	
 	export type AnimationController = {
@@ -40,6 +42,15 @@
 	})
 
 	const ANIMATION_DURATION = 300 // milliseconds
+	
+	const playbackRate = ref(0.75)
+
+	const { play } = useSound('../assets/sounds.mp3', { playbackRate, sprite: {
+		'swoosh1': [0, 900],
+		'swoosh2': [1000, 900],
+		'impact': [2000, 900],
+	}})
+
 	const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
 
 
@@ -52,9 +63,13 @@
 			return
 		}
 
+		playMoveSound(piece)
 		positionPiece(piece, move.to)
 		await animateMovement(move, piece.color)
-		if (attack) { shakeScreen() }
+		if (attack) {
+			playImpactSound()
+			shakeScreen()
+		}
 	}
 
 	const animateMovement = async (move: PlayerAction, color: Color) => {
@@ -88,6 +103,22 @@
 		pieceType.value[piece.color] = piece.type
 		element.style.top = `calc(${location[0]} * var(--square-size))`
 		element.style.left = `calc(${location[1]} * var(--square-size))`
+	}
+
+	const playMoveSound = (piece?: Piece) => {
+		const id = (Math.random() < 0.5) ? 'swoosh1' : 'swoosh2'
+		// @ts-ignore: type requires number, but is actually string
+		play({ id })
+		playbackRate.value = (Math.random() / 4) + 0.9
+
+		if (piece?.type == Type.KNIGHT) {
+			delay(300).then(() => playMoveSound())
+		}
+	}
+
+	const playImpactSound = () => {
+		// @ts-ignore: type requires number, but is actually string
+		play({ id: 'impact' })
 	}
 
 	const setAnimation = (turnAnimationOn: boolean, color: Color, isEnd?: boolean) => {

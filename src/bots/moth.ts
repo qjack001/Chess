@@ -32,7 +32,7 @@ function distanceFromOpponentsKing(move: PlayerAction, board: ChessBoard): numbe
 	let totalDistance = 0
 
 	for (let row = 0; row < board.length; row++) {
-		for (let column = 0; column < board.length; column++) {
+		for (let column = 0; column < board[0].length; column++) {
 			if (hypothetical[row][column].color == currentColor) {
 				totalDistance += distanceBetween(row, column, kingsPosition)
 			}
@@ -51,7 +51,7 @@ function distanceBetween(row: number, column: number, coordinate: [number, numbe
 function findOpponentsKing(currentColor: Color, board: ChessBoard): [number, number] {
 	
 	for (let row = 0; row < board.length; row++) {
-		for (let column = 0; column < board.length; column++) {
+		for (let column = 0; column < board[0].length; column++) {
 			if (board[row][column].type == Type.KING && board[row][column].color != currentColor) {
 				return [row, column]
 			}

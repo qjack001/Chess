@@ -23,7 +23,8 @@
 
 <script setup lang="ts">
 	import { ref } from 'vue'
-	import { type ChessBoard, type Piece, type Empty, Color, type PlayerAction } from '@/constants'
+	import { useSound } from '@vueuse/sound'
+	import { type ChessBoard, Color, type PlayerAction } from '@/constants'
 	import { isLegalMove, willBeInCheck } from '@/rules'
 	import ChessPiece from '@/components/ChessPiece.vue'
 
@@ -33,12 +34,12 @@
 		manualMove: (move: PlayerAction) => void
 	}>()
 
+	const { play } = useSound('../assets/sounds.mp3', { sprite: {
+		'click': [3000, 300],
+	}})
+
 	const selectedRow = ref(-1)
 	const selectedColumn = ref(-1)
-
-	const isChessPiece = (square: Piece | Empty) => {
-		return (square.type !== undefined && square.color !== undefined)
-	}
 
 	const getSquareColor = (rowNumber: number, columnNumber: number) => {
 		const color = (rowNumber + columnNumber) % 2 == 0
@@ -58,6 +59,9 @@
 			selectedColumn.value = -1
 		}
 		else {
+			// @ts-ignore
+			play({ id: 'click' }) // sound effect
+
 			// if not a legal option, select the piece instead
 			selectedRow.value = rowNumber
 			selectedColumn.value = columnNumber
