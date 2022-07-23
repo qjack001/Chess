@@ -23,6 +23,6 @@
 	status = 301
 
 [[redirects]]
-	from = "/*"
+	from = "/404.html"
 	to = "/?404"
 	status = 301
