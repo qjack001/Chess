@@ -52,7 +52,7 @@ export type Players = {
 	[Color.BLACK]: Player,
 }
 
-export const StartingBoard: ChessBoard = [
+export const LosAlamos: ChessBoard = [
 	[
 		{ color: Color.BLACK, type: Type.ROOK },
 		{ color: Color.BLACK, type: Type.KNIGHT },
@@ -185,6 +185,82 @@ export const FullSized: ChessBoard = [
 		{ color: Color.WHITE, type: Type.KING },
 		{ color: Color.WHITE, type: Type.BISHOP },
 		{ color: Color.WHITE, type: Type.KNIGHT},
+		{ color: Color.WHITE, type: Type.ROOK },
+	],
+]
+
+export const ExtraSmall: ChessBoard = [
+	[
+		{ color: Color.BLACK, type: Type.ROOK },
+		{ color: Color.BLACK, type: Type.KNIGHT },
+		{ color: Color.BLACK, type: Type.BISHOP },
+		{ color: Color.BLACK, type: Type.QUEEN },
+		{ color: Color.BLACK, type: Type.KING },
+	],
+	[
+		{ color: Color.BLACK, type: Type.PAWN },
+		{ color: Color.BLACK, type: Type.PAWN },
+		{ color: Color.BLACK, type: Type.PAWN },
+		{ color: Color.BLACK, type: Type.PAWN },
+		{ color: Color.BLACK, type: Type.PAWN },
+	],
+	[
+		{}, {}, {}, {}, {},
+	],
+	[
+		{ color: Color.WHITE, type: Type.PAWN },
+		{ color: Color.WHITE, type: Type.PAWN },
+		{ color: Color.WHITE, type: Type.PAWN },
+		{ color: Color.WHITE, type: Type.PAWN },
+		{ color: Color.WHITE, type: Type.PAWN },
+	],
+	[
+		{ color: Color.WHITE, type: Type.ROOK },
+		{ color: Color.WHITE, type: Type.KNIGHT },
+		{ color: Color.WHITE, type: Type.BISHOP },
+		{ color: Color.WHITE, type: Type.QUEEN },
+		{ color: Color.WHITE, type: Type.KING },
+	],
+]
+
+export const NotFound: ChessBoard = [
+	[
+		{ color: Color.WHITE, type: Type.ROOK },
+		{},
+		{ color: Color.WHITE, type: Type.KNIGHT },
+		{},
+		{ color: Color.WHITE, type: Type.BISHOP },
+		{ color: Color.WHITE, type: Type.QUEEN },
+		{ color: Color.WHITE, type: Type.BISHOP },
+		{},
+		{ color: Color.WHITE, type: Type.KNIGHT },
+		{},
+		{ color: Color.WHITE, type: Type.ROOK },
+	],
+	[
+		{ color: Color.WHITE, type: Type.PAWN },
+		{ color: Color.WHITE, type: Type.PAWN },
+		{ color: Color.WHITE, type: Type.PAWN },
+		{}, 
+		{ color: Color.WHITE, type: Type.PAWN },
+		{},
+		{ color: Color.WHITE, type: Type.PAWN },
+		{},
+		{ color: Color.WHITE, type: Type.PAWN },
+		{ color: Color.WHITE, type: Type.PAWN },
+		{ color: Color.WHITE, type: Type.PAWN },
+	],
+	[
+		{},
+		{},
+		{ color: Color.WHITE, type: Type.KNIGHT },
+		{},
+		{ color: Color.WHITE, type: Type.BISHOP },
+		{ color: Color.WHITE, type: Type.KING },
+		{ color: Color.WHITE, type: Type.BISHOP },
+		{},
+		{},
+		{},
 		{ color: Color.WHITE, type: Type.ROOK },
 	],
 ]

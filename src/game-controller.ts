@@ -1,4 +1,4 @@
-import { Color, Type, type ChessBoard, type Piece, type PlayerAction } from "@/constants";
+import { Color, ExtraSmall, FullSized, LosAlamos, NotFound, Type, type ChessBoard, type Piece, type PlayerAction } from "@/constants";
 import { isOutOfBounds, otherColor, isLegalMove, isAtEndOfBoard } from "@/rules";
 
 export interface GameState {
@@ -84,3 +84,16 @@ export function submitAction(existingBoard: ChessBoard, currentColor: Color, mov
 	}
 }
 
+export function getStartingBoard(urlParams: URLSearchParams): ChessBoard {
+	if (urlParams.has('full')) {
+		return FullSized
+	}
+	if (urlParams.has('small')) {
+		return ExtraSmall
+	}
+	if (urlParams.has('404')) {
+		return NotFound
+	}
+
+	return LosAlamos
+}

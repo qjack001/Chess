@@ -6,7 +6,11 @@
 			:manual-move="makeManualMove"
 		/>
 	</main>
-	<footer class="controls">
+	<p v-if="is404">
+		Board not found.
+		<custom-button text="Home" to="/"/>
+	</p>
+	<footer v-else class="controls">
 		<div class="player-select">
 			<player-selector :players="players" :onChange="onPlayerChange"/>
 		</div>
@@ -20,7 +24,7 @@
 
 <script setup lang="ts">
 	import { ref } from 'vue';
-	import { StartingBoard, FullSized, Color, type PlayerAction, type Players, HumanPlayer } from '@/constants'
+	import {  NotFound, Color, type PlayerAction, type Players, HumanPlayer } from '@/constants'
 	import { toStandardChessNotation } from '@/rules'
 	import * as GameController from '@/game-controller'
 	import Board from '@/components/Board.vue'
@@ -28,12 +32,14 @@
 	import PlayerSelector from '@/components/PlayerSelector.vue'
 	import CustomButton from '@/components/CustomButton.vue'
 
-	const urlParams = new URLSearchParams(window.location.search)
-
 	// instantiate with a placeholder animate function
 	const animationController = ref<AnimationController>({ animate: async () => {} })
 
-	const board = ref(urlParams.has('full') ? FullSized : StartingBoard)
+	const urlParams = new URLSearchParams(window.location.search)
+	const startingBoard = GameController.getStartingBoard(urlParams)
+	const is404 = (startingBoard == NotFound)
+
+	const board = ref(startingBoard)
 	const currentColor = ref<Color | false>(Color.WHITE)
 	const isManual = ref<boolean>(true)
 	const players = ref<Players>({
@@ -47,7 +53,9 @@
 
 	const applyChanges = (next: GameController.GameState) => {
 		board.value = next.board
-		currentColor.value = next.currentColor
+		currentColor.value = (is404)
+				? Color.WHITE
+				: next.currentColor
 		isManual.value = (next.currentColor === false)
 				? false
 				: players.value[next.currentColor].isManual ?? false
@@ -132,6 +140,13 @@
 	body.shake
 	{
 		animation: shake 0.35s infinite;
+	}
+
+	p
+	{
+		color: var(--white);
+		text-align: center;
+		line-height: calc(var(--square-size) * 2);
 	}
 
 	footer.controls
