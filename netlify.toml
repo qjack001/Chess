@@ -11,3 +11,18 @@
 
 [[plugins]]
 	package = "./plugins/pnpm-preinstaller"
+
+[[redirects]]
+	from = "/full"
+	to = "/?full"
+	status = 301
+
+[[redirects]]
+	from = "/small"
+	to = "/?small"
+	status = 301
+
+[[redirects]]
+	from = "/*"
+	to = "/?404"
+	status = 404
