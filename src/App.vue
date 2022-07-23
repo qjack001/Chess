@@ -6,7 +6,7 @@
 			:manual-move="makeManualMove"
 		/>
 	</main>
-	<p v-if="is404">
+	<p v-if="is404" class="404">
 		Board not found.
 		<custom-button text="Home" to="/"/>
 	</p>
@@ -142,7 +142,7 @@
 		animation: shake 0.35s infinite;
 	}
 
-	p
+	p.404
 	{
 		color: var(--white);
 		text-align: center;
