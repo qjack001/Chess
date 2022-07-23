@@ -4,9 +4,16 @@ instructions on how to do so. Once it's been added, you can play against it or w
 other bots at [chess-bot.netlify.app](https://chess-bot.netlify.app).
 
 The project uses [_Los Alamos_ chess](https://en.wikipedia.org/wiki/Los_Alamos_chess) (chess without
-the bishop) as an homage to the first chess-playing computer program. The look of the game (the gold
-swiping animations, in particular) are inspired by [the FIDE branding](https://tinyurl.com/fide2021)
-designed by [Morillas](https://www.morillas.com).
+the bishop) as an homage to the first chess-playing computer program. It also helps reduce the total
+calculations required for the bots to do, and throws human players' habits off. There's a full-sized
+board available at [chess-bot.netlify.app/full](https://chess-bot.netlify.app/full), and a very tiny
+board at [chess-bot.netlify.app/small](https://chess-bot.netlify.app/small) as well.
+
+![ag](./video.mp4)
+
+The visuals of the website (the gold swiping move animations, to be specific) are very much inspired
+by [the FIDE brand](https://tinyurl.com/fide2021), designed by [Morillas](https://www.morillas.com).
+
 
 ### Operational Notes
 
@@ -27,18 +34,18 @@ for which can be found in the [`netlify.toml` file](./netlify.toml).
 
 ```bash
 src/
-├┬ bots/
-│├─ how-to-add-a-bot.md ## instructions
-│├─ index.ts ## list of all bots
-│└─ monkey.ts ## a very simple example bot
-├┬ components/
-│├─ Animator.vue ## controls the move-animations
-│├─ Board.vue ## draws (interactive) chess board
-│├─ ChessPiece.vue ## draws the requested piece
-│├─ CustomButton.vue
-│└─ PlayerSelector.vue ## manages bot selection
-├─ constants.ts ## useful types and interfaces
-├─ game-controller.ts ## runs actual game step
-├─ rules.ts ## utility functions for chess rules
-└─ App.vue ## main thread; renders & manages game
+├─┬─ bots/
+│ ├── how-to-add-a-bot.md    ## instructions
+│ ├── index.ts    ## list of all bots
+│ └── monkey.ts    ## a very simple example bot
+├─┬─ components/
+│ ├── Animator.vue    ## controls the move-animations
+│ ├── Board.vue    ## draws (interactive) chess board
+│ ├── ChessPiece.vue    ## draws the requested piece
+│ ├── CustomButton.vue
+│ └── PlayerSelector.vue    ## manages bot selection
+├── constants.ts    ## useful types and interfaces
+├── game-controller.ts    ## runs actual game step
+├── rules.ts    ## utility functions for chess rules
+└── App.vue    ## main thread; renders & manages game
 ```
