@@ -9,7 +9,7 @@ calculations required for the bots to do, and throws human players' habits off. 
 board available at [chess-bot.netlify.app/full](https://chess-bot.netlify.app/full), and a very tiny
 board at [chess-bot.netlify.app/small](https://chess-bot.netlify.app/small) as well.
 
-![ag](./video.mp4)
+![Example gameplay](https://user-images.githubusercontent.com/19389660/180586897-4ab63a34-8c49-435b-81f5-929b8462b2e1.gif)
 
 The visuals of the website (the gold swiping move animations, to be specific) are very much inspired
 by [the FIDE brand](https://tinyurl.com/fide2021), designed by [Morillas](https://www.morillas.com).
