@@ -32,7 +32,7 @@ function allLegalMoves(fromRow: number, fromColumn: number, board: ChessBoard): 
 	const legalMoves: PlayerAction[] = []
 
 	for (let toRow = 0; toRow < board.length; toRow++) {
-		for (let toColumn = 0; toColumn < board.length; toColumn++) {
+		for (let toColumn = 0; toColumn < board[0].length; toColumn++) {
 			const hypotheticalMove: PlayerAction = {
 				from: [fromRow, fromColumn],
 				to: [toRow, toColumn],

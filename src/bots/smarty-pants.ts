@@ -27,7 +27,7 @@ function pointsOnBoard(forColor: Color): (board: ChessBoard) => number {
 	return (board: ChessBoard) => {
 		var totalEvaluation = 0;
 		for (let row = 0; row < board.length; row++) {
-			for (let col = 0; col < board.length; col++) {
+			for (let col = 0; col < board[0].length; col++) {
 				const color = board[row][col].color
 				if (color === forColor) {
 					totalEvaluation = totalEvaluation + getPieceValue(board[row][col])

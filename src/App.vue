@@ -41,7 +41,7 @@
 		[Color.BLACK]: HumanPlayer,
 	})
 
-	document.body.style.setProperty('--num-of-squares', `${board.value.length}`);
+	document.body.style.setProperty('--num-of-squares', `${board.value[0].length}`);
 
 	const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
 
@@ -117,7 +117,7 @@
 	body
 	{
 		/*
-		 * Set square-size to 1/7th of the window's shortest width (up to a
+		 * Set square-size to 1/(n+1) of the window's shortest width (up to a
 		 * maximum of 120px). This way, the full board can always be displayed,
 		 * with half of a square's width of padding on either side. 
 		 */

@@ -137,7 +137,7 @@ export default class MiniMax {
 		const blackMoves: PlayerAction[] = []
 
 		for (let row = 0; row < board.length; row++) {
-			for (let column = 0; column < board.length; column++) {
+			for (let column = 0; column < board[0].length; column++) {
 				if (board[row][column].color === Color.WHITE) {
 					whiteMoves.push(...this.allLegalMoves(row, column, board))
 				}
@@ -161,7 +161,7 @@ export default class MiniMax {
 		const moves: PlayerAction[] = []
 
 		for (let row = 0; row < board.length; row++) {
-			for (let column = 0; column < board.length; column++) {
+			for (let column = 0; column < board[0].length; column++) {
 				if (board[row][column].color === colorToMove) {
 					moves.push(...this.allLegalMoves(row, column, board))
 				}
@@ -176,7 +176,7 @@ export default class MiniMax {
 		const legalMoves: PlayerAction[] = []
 
 		for (let toRow = 0; toRow < board.length; toRow++) {
-			for (let toColumn = 0; toColumn < board.length; toColumn++) {
+			for (let toColumn = 0; toColumn < board[0].length; toColumn++) {
 				const hypotheticalMove: PlayerAction = {
 					from: [fromRow, fromColumn],
 					to: [toRow, toColumn],

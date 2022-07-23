@@ -131,7 +131,7 @@ function pieceIsInDanger(row: number, column: number, board: ChessBoard): boolea
 	// iterate over the entire board and see if any piece can legal move to the
 	// given row/column (indicating it can attack)
 	for (let fromRow = 0; fromRow < board.length; fromRow++) {
-		for (let fromColumn = 0; fromColumn < board.length; fromColumn++) {
+		for (let fromColumn = 0; fromColumn < board[0].length; fromColumn++) {
 			const hypotheticalMove: PlayerAction = {
 				from: [fromRow, fromColumn],
 				to: [row, column],
@@ -153,7 +153,7 @@ function legalMoves(row: number, column: number, board: ChessBoard): PlayerActio
 	const legalMoves: PlayerAction[] = []
 
 	for (let toRow = 0; toRow < board.length; toRow++) {
-		for (let toColumn = 0; toColumn < board.length; toColumn++) {
+		for (let toColumn = 0; toColumn < board[0].length; toColumn++) {
 			const hypotheticalMove: PlayerAction = {
 				from: [row, column],
 				to: [toRow, toColumn],

@@ -39,7 +39,7 @@ function howProtected(move: PlayerAction, board: ChessBoard): number {
 	const diminishingReturns = 0.5
 	
 	for (let fromRow = 0; fromRow < board.length; fromRow++) {
-		for (let fromColumn = 0; fromColumn < board.length; fromColumn++) {
+		for (let fromColumn = 0; fromColumn < board[0].length; fromColumn++) {
 		
 			const hypotheticalMove: PlayerAction = {
 				from: [fromRow, fromColumn],

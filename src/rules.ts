@@ -54,9 +54,9 @@ export function isOutOfBounds(board: ChessBoard, move: PlayerAction) {
 		move.from[0] == undefined || move.from[1] == undefined || 
 		move.to[0] == undefined || move.to[1] == undefined ||
 		move.from[0] < 0 || move.from[0] >= board.length ||
-		move.from[1] < 0 || move.from[1] >= board.length ||
+		move.from[1] < 0 || move.from[1] >= board[0].length ||
 		move.to[0] < 0 || move.to[0] >= board.length ||
-		move.to[1] < 0 || move.to[1] >= board.length)
+		move.to[1] < 0 || move.to[1] >= board[0].length)
 }
 
 /**
