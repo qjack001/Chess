@@ -45,7 +45,7 @@
 	
 	const playbackRate = ref(0.75)
 
-	const { play } = useSound('../assets/sounds.mp3', { playbackRate, sprite: {
+	const { play } = useSound('/public/sounds.mp3', { playbackRate, sprite: {
 		'swoosh1': [0, 900],
 		'swoosh2': [1000, 900],
 		'impact': [2000, 900],

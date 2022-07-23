@@ -34,7 +34,7 @@
 		manualMove: (move: PlayerAction) => void
 	}>()
 
-	const { play } = useSound('../assets/sounds.mp3', { sprite: {
+	const { play } = useSound('/public/sounds.mp3', { sprite: {
 		'click': [3000, 300],
 	}})
 
