@@ -9,7 +9,11 @@ calculations required for the bots to do, and throws human players' habits off. 
 board available at [chess-bot.netlify.app/full](https://chess-bot.netlify.app/full), and a very tiny
 board at [chess-bot.netlify.app/small](https://chess-bot.netlify.app/small) as well.
 
-![Example gameplay](https://user-images.githubusercontent.com/19389660/180586897-4ab63a34-8c49-435b-81f5-929b8462b2e1.gif)
+<br/>
+
+![Example gameplay: the "Limiter" chess bot faces off against the "Capitalist" bot.](./gameplay.gif)
+
+<br/>
 
 The visuals of the website (the gold swiping move animations, to be specific) are very much inspired
 by [the FIDE brand](https://tinyurl.com/fide2021), designed by [Morillas](https://www.morillas.com).
@@ -32,20 +36,22 @@ for which can be found in the [`netlify.toml` file](./netlify.toml).
 
 #### Project Structure
 
+Here's a little mini-map of the project:
+
 ```bash
 src/
 ├─┬─ bots/
-│ ├── how-to-add-a-bot.md    ## instructions
-│ ├── index.ts    ## list of all bots
-│ └── monkey.ts    ## a very simple example bot
+│ ├── how-to-add-a-bot.md  ## instructions
+│ ├── index.ts   ## list of all bots
+│ └── monkey.ts  ## a very simple example bot
 ├─┬─ components/
 │ ├── Animator.vue    ## controls the move-animations
-│ ├── Board.vue    ## draws (interactive) chess board
-│ ├── ChessPiece.vue    ## draws the requested piece
+│ ├── Board.vue       ## draws (interactive) chessboard
+│ ├── ChessPiece.vue  ## draws the requested piece
 │ ├── CustomButton.vue
-│ └── PlayerSelector.vue    ## manages bot selection
-├── constants.ts    ## useful types and interfaces
+│ └── PlayerSelector.vue  ## manages bot selection
+├── constants.ts          ## useful types & interfaces
 ├── game-controller.ts    ## runs actual game step
 ├── rules.ts    ## utility functions for chess rules
-└── App.vue    ## main thread; renders & manages game
+└── App.vue     ## main thread; renders & manages game
 ```
