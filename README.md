@@ -1,3 +1,7 @@
+<img align="right" width="120" height="120" src="./chess-bot-paintings/0.png" alt="Chess-bots, art">
+
+# Chess Bots
+
 This project is a simple chess program — with hooks allowing you to easily create (and play against)
 your own chess bot. See the [How To Add a Bot](./src/bots/how-to-add-a-bot.md) document for specific
 instructions on how to do so. Once it's been added, you can play against it or watch it play against

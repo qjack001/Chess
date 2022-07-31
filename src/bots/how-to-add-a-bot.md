@@ -1,3 +1,7 @@
+<img align="right" width="120" height="120"
+     alt="Philosopher’s stone, logo of PostCSS"
+     src="../../chess-bot-paintings/1.png">
+
 # How to add a chess bot
 
 You've come to the right place. To start, create a new Typescript file in this directory
@@ -41,3 +45,8 @@ Add you bot to the [`/bots/index.ts`](./index.ts) file, and it will automaticall
 be included in the list of playable bots. Run `pnpm run dev` to test this locally.
 Once you're happy with it, open a pull request and assign it to
 [`@qjack001`](https://github.com/qjack001).
+
+
+<img align="center" width="120" height="120"
+     alt="Philosopher’s stone, logo of PostCSS"
+     src="../../chess-bot-paintings/2.png">
