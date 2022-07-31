@@ -1,7 +1,3 @@
-<img align="right" width="120" height="120"
-     alt="Philosopher’s stone, logo of PostCSS"
-     src="../../chess-bot-paintings/1.png">
-
 # How to add a chess bot
 
 You've come to the right place. To start, create a new Typescript file in this directory
@@ -24,6 +20,8 @@ export const YourBot: Bot = {
 For a simple example, see [`monkey.ts`](./monkey.ts), which implements a bot that
 just chooses moves randomly.
 
+<img align="right" width="300" height="300" src="../../chess-bot-paintings/1.png"
+     alt="A drawing of a robot playing chess">
 
 ## Quick starts
 
@@ -47,6 +45,3 @@ Once you're happy with it, open a pull request and assign it to
 [`@qjack001`](https://github.com/qjack001).
 
 
-<img align="center" width="120" height="120"
-     alt="Philosopher’s stone, logo of PostCSS"
-     src="../../chess-bot-paintings/2.png">
