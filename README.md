@@ -1,4 +1,4 @@
-<img align="right" width="120" height="120" src="./chess-bot-paintings/0.png" alt="Chess-bots, art">
+<img align="right" width="300" height="300" src="./chess-bot-paintings/0.png" alt="Chess-bots, art">
 
 # Chess Bots
 
@@ -59,3 +59,8 @@ src/
 ├── rules.ts    ## utility functions for chess rules
 └── App.vue     ## main thread; renders & manages game
 ```
+
+<p align="center">
+  <br>
+  <img width="500" height="500" src="./chess-bot-paintings/3.png" alt="Robots play chess, painting">
+</p>
